@@ -5,7 +5,7 @@ codes for scrapping job lists from remoteOK
 ## Requirements
 To run the codes the installation of requests and Beautifulsoup4 is required.
 
-**LastFM**
+**Requirements**
 ```
 pip install requests
 pip install beautifulsoup4
