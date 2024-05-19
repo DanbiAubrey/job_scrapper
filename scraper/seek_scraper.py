@@ -33,14 +33,15 @@ class Seek_Scraper:
         page.screenshot(path="screenshot.png")
 
     def scraper(self):
+        jobs_db = []
+        #for keyword in self.keywords:
         for keyword in keywords:
-            current_url = f"{url}/{keyword}-jobs/in-All-{self.region}-QLD"
-            r = requests.get(current_url) # send get request to the url and return request.response object
+            initial_url = f"{url}/{keyword}-jobs/in-All-{self.region}-QLD"
+            r = requests.get(initial_url) # send get request to the url and return request.response object
             #last_page_num = get_last_page_num(current_url, keyword)
-            last_page_num = 10
-            jobs_db = []
+            last_page_num = self.get_last_page_num(initial_url, keyword)
             for i in range(1,last_page_num+1):
-                current_url = f"{current_url}/?page={i}"
+                current_url = f"{initial_url}/?page={i}"
                 r = requests.get(current_url)
                 soup = BeautifulSoup(r.content, "html.parser")
                 #articles = soup.select('article[data-testid="job-card"]')
@@ -70,7 +71,8 @@ class Seek_Scraper:
                     }
 
                     jobs_db.append(job_db)
-                print(jobs_db)
+                #print(jobs_db)
+        return jobs_db
 
     def get_last_page_num(self, current_url, keyword):
         with sync_playwright() as p:
@@ -82,9 +84,22 @@ class Seek_Scraper:
 
             while not last_page_reached:
                 try:
-                    last_button = page.wait_for_selector("li.y735df0._1iz8dgs4u._1iz8dgs4z:not(._1iz8dgs8r)")
-                    last_button.click()
-                    if not page.query_selector("li.y735df0._1iz8dgsa6._1iz8dgs9v._1iz8dgsw"): # if there is no next button
+                    if page.query_selector("li.y735df0._1iz8dgsa6._1iz8dgs9v._1iz8dgsw"):
+                        next_btn = page.query_selector("li.y735df0._1iz8dgsa6._1iz8dgs9v._1iz8dgsw").get_attribute('class')
+                        class_name = str(next_btn).split(' ')
+                        # print(class_name)
+                        if len(class_name) == 4:
+                            # print("clicked last button")
+                            last_button = page.wait_for_selector("li.y735df0._1iz8dgs4u._1iz8dgs4z:not(._1iz8dgs8r)")
+                            last_button.click()
+                        else: # if there is no next button
+                            # print("there is no next button")
+                            last_page_reached = True
+                            page_url = page.url
+                            path_elements = page_url.split('=')
+                            last_page = path_elements[-1]
+                    else: # if there is no next button
+                        # print("there is no next button")
                         last_page_reached = True
                         page_url = page.url
                         path_elements = page_url.split('=')
@@ -94,18 +109,24 @@ class Seek_Scraper:
                     break
             browser.close()
 
-        return last_page
+        return int(last_page)
     
-    #def wrtie_csv(self, file_name, jobs):
-
+    def wrtie_csv(self, file_name, jobs_db):
+        file  = open(f"{file_name}.csv", "w")
+        writer = csv.writer(file)
+        writer.writerow(jobs_db[0].keys())
+        for job in jobs_db:
+            writer.writerow(job.values()) 
 
 
 url = f"https://www.seek.com.au/"
-keywords = ["Web-Developer", "data scientist", "machine learning"]
+keywords = ["Web-Developer", "data-scientist", "machine-learning"]
 region = "Brisbane"
 
 scraper = Seek_Scraper(url, keywords, region) #instantiate new scraper class object
 '''playwright demo'''
 #scraper.playwright('web developer')
-jobs = scraper.scraper()
+jobs_db = scraper.scraper()
+print("start writing csv file...")
+scraper.wrtie_csv("jobs", jobs_db)
 
