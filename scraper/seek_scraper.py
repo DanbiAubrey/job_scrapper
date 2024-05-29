@@ -117,6 +117,7 @@ class Seek_Scraper:
         writer.writerow(jobs_db[0].keys())
         for job in jobs_db:
             writer.writerow(job.values()) 
+        file.close()
 
     def execute(self):
         print("start scraping jobs from seek..")
