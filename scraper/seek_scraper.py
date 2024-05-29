@@ -5,8 +5,8 @@ import time
 import requests
 
 class Seek_Scraper:
-    def __init__(self, url, keywords, region):
-        self.url = url
+    def __init__(self, keywords, region):
+        self.url = f"https://www.seek.com.au/"
         self.keywords = keywords
         self.region = region
         self.jobs_db = []
@@ -118,15 +118,20 @@ class Seek_Scraper:
         for job in jobs_db:
             writer.writerow(job.values()) 
 
+    def execute(self):
+        print("start scraping jobs from seek")
+        jobs_db = self.scraper()
+        print("start writing csv file...")
+        self.wrtie_csv("jobs", jobs_db)
 
-url = f"https://www.seek.com.au/"
-keywords = ["Web-Developer", "data-scientist", "machine-learning"]
-region = "Brisbane"
+# url = f"https://www.seek.com.au/"
+# keywords = ["Web-Developer", "data-scientist", "machine-learning"]
+# region = "Brisbane"
 
-scraper = Seek_Scraper(url, keywords, region) #instantiate new scraper class object
-'''playwright demo'''
-#scraper.playwright('web developer')
-jobs_db = scraper.scraper()
-print("start writing csv file...")
-scraper.wrtie_csv("jobs", jobs_db)
+# scraper = Seek_Scraper(url, keywords, region) #instantiate new scraper class object
+# '''playwright demo'''
+# #scraper.playwright('web developer')
+# jobs_db = scraper.scraper()
+# print("start writing csv file...")
+# scraper.wrtie_csv("jobs", jobs_db)
 
