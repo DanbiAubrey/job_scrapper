@@ -35,8 +35,8 @@ class Seek_Scraper:
     def scraper(self):
         jobs_db = []
         #for keyword in self.keywords:
-        for keyword in keywords:
-            initial_url = f"{url}/{keyword}-jobs/in-All-{self.region}-QLD"
+        for keyword in self.keywords:
+            initial_url = f"{self.url}/{keyword}-jobs/in-All-{self.region}-QLD"
             r = requests.get(initial_url) # send get request to the url and return request.response object
             #last_page_num = get_last_page_num(current_url, keyword)
             last_page_num = self.get_last_page_num(initial_url, keyword)
