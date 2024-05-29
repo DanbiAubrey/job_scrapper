@@ -119,19 +119,8 @@ class Seek_Scraper:
             writer.writerow(job.values()) 
 
     def execute(self):
-        print("start scraping jobs from seek")
+        print("start scraping jobs from seek..")
         jobs_db = self.scraper()
         print("start writing csv file...")
         self.wrtie_csv("jobs", jobs_db)
-
-# url = f"https://www.seek.com.au/"
-# keywords = ["Web-Developer", "data-scientist", "machine-learning"]
-# region = "Brisbane"
-
-# scraper = Seek_Scraper(url, keywords, region) #instantiate new scraper class object
-# '''playwright demo'''
-# #scraper.playwright('web developer')
-# jobs_db = scraper.scraper()
-# print("start writing csv file...")
-# scraper.wrtie_csv("jobs", jobs_db)
 
