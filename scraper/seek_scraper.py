@@ -13,7 +13,7 @@ class Seek_Scraper:
     
     def playwright(self, keyword):
         p = sync_playwright().start() # initialize playwright object
-        browser = p.chromium.launch(headless=False) # launch chrome browser instance / browser window visible mode
+        browser = p.chromium.launch() # launch chrome browser instance / browser window visible mode
         page = browser.new_page() # create new browser page
 
         page.goto(self.url)
@@ -66,7 +66,7 @@ class Seek_Scraper:
                         'title' : title,
                         'company_name' : company_name,
                         'link' : link,
-                        'job type' : job_type,
+                        'job_type' : job_type,
                         'location' : location
                     }
 
@@ -76,7 +76,7 @@ class Seek_Scraper:
 
     def get_last_page_num(self, current_url, keyword):
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False)
+            browser = p.chromium.launch()
             page = browser.new_page()
             page.goto(current_url)
             last_page = 1
