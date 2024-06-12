@@ -1,9 +1,10 @@
 # job_scrapper
 
-codes for scrapping job lists from remoteOK
+codes for scrapping job lists from SEEK
+Webupage developed with Flask and PICOCSS
 
 ## Requirements
-To run the codes the installation of requests and Beautifulsoup4 is required.
+To run the codes the installation of requests, Beautifulsoup4, playwright, Flask and PicoCss is required.
 
 **Requirements**
 ```
