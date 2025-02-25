@@ -1,7 +1,7 @@
 # job_scrapper
 
 codes for scrapping job lists from SEEK
-Webupage developed with Flask and PICOCSS
+Webpage developed with Flask and PICOCSS
 
 ## Requirements
 To run the codes the installation of requests, Beautifulsoup4, playwright, Flask and PicoCss is required.
